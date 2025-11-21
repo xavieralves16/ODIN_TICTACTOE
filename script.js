@@ -18,3 +18,7 @@ const Gameboard = (function () {
     return { getBoard, setCell, reset };
 })();
 
+
+const Player = (name, marker) => {
+    return { name, marker };
+};
