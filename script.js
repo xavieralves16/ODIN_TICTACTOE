@@ -75,3 +75,42 @@ const GameController = (function () {
 
     return { start, playRound, getActivePlayer };
 })();
+
+const displayController = (function () {
+    const boardDiv = document.querySelector("#board");
+    const message = document.querySelector("#message");
+    const restartBtn = document.querySelector("#restartBtn");
+
+    const render = () => {
+        boardDiv.innerHTML = "";
+        Gameboard.getBoard().forEach((cell, index) => {
+            const cellDiv = document.createElement("div");
+            cellDiv.textContent = cell;
+            cellDiv.addEventListener("click", () => handleClick(index));
+            boardDiv.appendChild(cellDiv);
+        });
+    };
+
+    const handleClick = (index) => {
+        const result = GameController.playRound(index);
+        render();
+
+        if (result) {
+            message.textContent = result;
+        } else {
+            message.textContent =
+                `${GameController.getActivePlayer().name}'s turn`;
+        }
+    };
+
+    restartBtn.addEventListener("click", () => {
+        GameController.start();
+        message.textContent = "New game!";
+        render();
+    });
+
+    // initialize
+    GameController.start();
+    render();
+
+})();
